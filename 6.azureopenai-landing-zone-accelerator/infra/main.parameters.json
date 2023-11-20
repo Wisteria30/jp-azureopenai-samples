@@ -13,13 +13,13 @@
       "value": "*"
     },
     "audienceAppId": {
-      "value": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      "value": "e7f1814a-d34a-4e5e-a28f-a760de07605e"
     },
     "scopeName": {
       "value": "chat"
     },
     "tenantId": {
-      "value": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      "value": "43221617-b874-4dd7-b780-196396977dc1"
     },
     "aoaiCapacity": {
       "value": 30

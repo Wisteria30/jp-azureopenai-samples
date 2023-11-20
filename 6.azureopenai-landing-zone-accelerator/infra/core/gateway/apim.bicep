@@ -26,7 +26,7 @@ param skuCount int = 0
 @description('Azure Application Insights Name')
 param applicationInsightsName string
 param workspaceId string
-param storageAccountId string
+// param storageAccountId string
 
 resource apimService 'Microsoft.ApiManagement/service@2021-08-01' = {
   name: name
@@ -68,34 +68,22 @@ resource diagnosticsSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-p
   scope: apimService
   properties: {
     workspaceId: workspaceId
-    storageAccountId: storageAccountId
+    // storageAccountId: storageAccountId
     logAnalyticsDestinationType: 'Dedicated'
     logs: [
       {
         categoryGroup: 'allLogs'
         enabled: true
-        retentionPolicy: {
-          enabled: true
-          days: 360
-        }
       }
       {
         categoryGroup: 'audit'
         enabled: true
-        retentionPolicy: {
-          enabled: true
-          days: 360
-        }
       }
     ]
     metrics: [
       {
         category: 'AllMetrics'
         enabled: true
-        retentionPolicy: {
-          enabled: true
-          days: 360
-        }
       }
     ]
   }

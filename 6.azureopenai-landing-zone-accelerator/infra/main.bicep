@@ -9,10 +9,6 @@ param environmentName string
 @description('Primary location for all resources')
 param location string
 
-param storageAccountName string = ''
-param storageResourceGroupLocation string = location
-param storageContainerName string = 'content'
-
 // Optional parameters to override the default azd resource naming conventions. Update the main.parameters.json file to provide values. e.g.,:
 // "resourceGroupName": {
 //      "value": "myGroupName"
@@ -32,8 +28,6 @@ param aoaiCapacity int = 10
 
 // Please provide these parameters if you need to create a new Azure OpenAI resource
 param openAiSkuName string = 'S0'
-param gptDeploymentName string = 'davinci'
-param gptModelName string = 'text-davinci-003'
 param chatGptDeploymentName string = 'chatgpt'
 param chatGptModelName string = 'gpt-35-turbo'
 
@@ -76,54 +70,16 @@ module openAi 'core/ai/cognitiveservices.bicep' = {
     }
     deployments: [
       {
-        name: gptDeploymentName
-        model: {
-          format: 'OpenAI'
-          name: gptModelName
-          version: '1'
-        }
-        sku: {
-          name: 'Standard'
-          capacity: aoaiCapacity
-        }
-      }
-
-      {
         name: chatGptDeploymentName
         model: {
           format: 'OpenAI'
           name: chatGptModelName
-          version: '0301'
+          version: '0613'
         }
         sku: {
           name: 'Standard'
           capacity: aoaiCapacity
         }
-      }
-    ]
-  }
-}
-
-// Storage Account
-module storage 'core/storage/storage-account.bicep' = {
-  name: 'storage'
-  scope: rg
-  params: {
-    name: !empty(storageAccountName) ? storageAccountName : '${abbrs.storageStorageAccounts}${resourceToken}'
-    location: storageResourceGroupLocation
-    tags: tags
-    publicNetworkAccess: 'Enabled'
-    sku: {
-      name: 'Standard_ZRS'
-    }
-    deleteRetentionPolicy: {
-      enabled: true
-      days: 2
-    }
-    containers: [
-      {
-        name: storageContainerName
-        publicAccess: 'None'
       }
     ]
   }
@@ -155,7 +111,6 @@ module apim './core/gateway/apim.bicep' = {
     skuCount: 1
     applicationInsightsName: monitoring.outputs.applicationInsightsName
     workspaceId: monitoring.outputs.logAnalyticsWorkspaceId
-    storageAccountId: storage.outputs.id
   }
 }
 
